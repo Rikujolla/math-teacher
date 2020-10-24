@@ -22,33 +22,45 @@ CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-import QtQuick 2.2
-import Sailfish.Silica 1.0
+import QtQuick 2.12
+import QtQuick.Controls 2.5
+import QtQuick.Window 2.15
+//import Sailfish.Silica 1.0
 import QtQuick.LocalStorage 2.0
 import "./settings.js" as Mysets
+
 
 Page {
     id: page
     property bool delete_mode: false
     // The effective value will be restricted by ApplicationWindow.allowedOrientations
-    allowedOrientations: Orientation.All
-
-    SilicaListView {
+    //allowedOrientations: Orientation.All
+    ListView {
         id: listView
-        PullDownMenu{
-            MenuItem {
+
+        //anchors.top: button_row.bottom
+        model: players
+        anchors.fill: parent
+        /*header: Label {
+            text: delete_mode ? qsTr("Player deletion") : qsTr("Player selection")
+        }*/
+        header: Row{
+            id: button_row
+            spacing:100
+            anchors.horizontalCenter: parent.horizontalCenter
+            Button {
                 text: qsTr("Delete player")
                 onClicked: {
                     delete_mode = true;
                 }
             }
 
-            MenuItem {
+            Button {
                 text: qsTr("Add player")
                 onClicked: {
-                    var dialog = pageStack.push(Qt.resolvedUrl("AddPlayer.qml"),
+                    var dialog = stackView.push(addPlayer,
                                                 {"name": ''})
-                    dialog.accepted.connect(function() {
+                    dialog.playeradded.connect(function() {
                         player_name = dialog.name
                         Mysets.saveSettings()
                         Mysets.loadPlayers();
@@ -57,43 +69,47 @@ Page {
             }
         }
 
-        model: players
-        anchors.fill: parent
-        header: PageHeader {
-            title: delete_mode ? qsTr("Player deletion") : qsTr("Player selection")
-        }
-        delegate: BackgroundItem {
+        delegate: Rectangle {
             id: delegate
 
-            Label {
-                x: Theme.horizontalPageMargin
-                text: player
-                anchors.verticalCenter: parent.verticalCenter
-                color: delete_mode ? "red": (delegate.highlighted ? Theme.highlightColor : Theme.primaryColor)
-            }
-            onClicked: {
-                player_name = players.get(index).player
-                if (!delete_mode) {
-                    Mysets.updateActivePlayer(index)
-                    Mysets.loadSettings()
-                    questions_count = Math.round(4 + Math.log(level+1) * 5);
-                    pageStack.pop()
+            MouseArea {
+                Label{
+                    //x: Theme.horizontalPageMargin
+                    text: player
+                    background: Rectangle {height:100;width:page.width}
+                    //anchors.verticalCenter: parent.verticalCenter
+                    //color: delete_mode ? "red": (delegate.highlighted ? Theme.highlightColor : Theme.primaryColor)
                 }
-                else {
-                    remorseDel.execute(qsTr("Deleting"), console.log("remorse") , 3000 )
+                onClicked: {
+                    player_name = players.get(index).player
+                    if (!delete_mode) {
+                        Mysets.updateActivePlayer(index)
+                        Mysets.loadSettings()
+                        questions_count = Math.round(4 + Math.log(level+1) * 5);
+                        pageStack.pop()
+                    }
+                    else {
+                        remorseDel.execute(qsTr("Deleting"), console.log("remorse") , 3000 )
+                    }
                 }
             }
         }
 
-        RemorsePopup { id: remorseDel
+
+        /*RemorsePopup { id: remorseDel
             onTriggered: {
                 Mysets.deletePlayer(player_name)
                 delete_mode = false
                 Mysets.loadPlayers();
             }
-        }
+        }*/
 
-        VerticalScrollDecorator {}
+        //VerticalScrollDecorator {}
+    }
+
+    AddPlayer{
+        id: addPlayer
+        visible:false
     }
 
     ListModel {

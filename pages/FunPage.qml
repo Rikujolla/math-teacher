@@ -184,15 +184,15 @@ Page {
 
                                 onPressAndHold: {
                                     if (developer){console.log("testing", index)}
-                                    var dialog = stackView.push(selColoores)
+                                    var dialog = stackView.push(selColoores,{"intexos":index})
                                     dialog.colorselected.connect(function() {
-                                        blotch_color = dialog.selectedColor
+                                        /*blotch_color = dialog.selectedColor
                                         for (var i = 0; i < harnesses.count; i++) {
                                             if (harnesses.get(i).index === index) {
                                                 harnesses.set(i,{"painted":true});
                                                 harnesses.set(i,{"fill":blotch_color, "stroke":blotch_color})
                                             }
-                                        }
+                                        }*/
                                         saddle.clear();
                                     })
                                 }
@@ -220,7 +220,7 @@ Page {
     SelectColor {
         id:selColoores
         visible: false
-        onColorselected: console.log("Color " + selColor)
+        onColorselected: console.log("Color selected" + "selColor")
     }
 
 

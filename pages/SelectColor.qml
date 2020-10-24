@@ -4,8 +4,8 @@ import QtQuick.Controls 2.5
 
 Page {
     id: page
-    property string selectedColor: ""
-    signal colorselected(string selColor)
+    property int intexos
+    signal colorselected()
     title: qsTr("Color selection")
 
     MouseArea {
@@ -29,14 +29,17 @@ Page {
                     height: grid.cellHeight
                     width: grid.cellWidth
                     onClicked: {
-                        selectedColor = col
-                        page.colorselected(col)
-                        console.log("Colores", col)
+                        page.colorselected()
+                        for (var i = 0; i < harnesses.count; i++) {
+                            if (harnesses.get(i).index === intexos) {
+                                harnesses.set(i,{"painted":true});
+                                harnesses.set(i,{"fill":col, "stroke":col})
+                            }
+                        }
                         stackView.pop()
                     }
                 }
             }
         }
     }
-    Component.onCompleted: console.log("parent.colors[0]")
 }
