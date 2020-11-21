@@ -23,11 +23,13 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 import QtQuick 2.2
-import Sailfish.Silica 1.0
+//import Sailfish.Silica 1.0
+import QtQuick.Window 2.15
+import QtQuick.Controls 2.5
 
-Item {
-    id: flowerBox
-    anchors.fill: parent
+Page {
+    id: page
+    //anchors.fill: parent
 
     property alias flower_result: rec_repeat.result
     //property alias pro_color: dialogWindow.proColor
@@ -42,7 +44,7 @@ Item {
         MouseArea {
             anchors.fill: parent
             onClicked: {
-                flowerBox.destroy()
+                pageStack.pop()
             }
         }
     }

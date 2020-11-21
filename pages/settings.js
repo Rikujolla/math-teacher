@@ -145,8 +145,8 @@ function saveLevelPoints() {
                         tx.executeSql('INSERT INTO Settings VALUES(?, ?, ?, ?, ?)', [ 'level_points', player_name, '', '', level_points ])
                     }
 
-                    rs = tx.executeSql('SELECT * FROM Settings WHERE name = ? and subname = ?', ['level', player_name]);
-                    if (rs.rows.length > 0) {
+                    var rt = tx.executeSql('SELECT * FROM Settings WHERE name = ? and subname = ?', ['level', player_name]);
+                    if (rt.rows.length > 0) {
                         tx.executeSql('UPDATE Settings SET valint=? WHERE name=? AND subname =?', [level, 'level', player_name])
                     }
                     else {

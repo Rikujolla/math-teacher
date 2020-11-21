@@ -119,14 +119,14 @@ Page {
                                         MyFunc.fill_answers(a, b, c, level)
                                         questions_count = Math.round(4 + Math.log(level+1) * 5);
                                         if (developer) {console.log("Fun page", questions_count)}
-                                        stackView.push("FunPage.qml")
+                                        pageStack.push("FunPage.qml")
                                     }
                                     else if (MyFunc.level_check(level, level_points) > level) {
                                         MyFunc.fill_answers(a, b, c, level)
                                         level = MyFunc.level_check(level, level_points);
                                         Mysets.saveLevelPoints();
                                         if (developer) {console.log("Level page", questions_count)}
-                                        stackView.push("LevelChange.qml")
+                                        pageStack.push("LevelChange.qml")
                                     }
                                     else if (time_slider.value < time_slider.to) {
                                         coins = coins + 1;
@@ -146,7 +146,7 @@ Page {
                                     if (mistakesModel.count > 5 || questions_count < 1) {
                                         questions_count = 5;
                                         if (developer) {console.log("Learning page", questions_count)}
-                                        stackView.push("LearningPage.qml")
+                                        pageStack.push("LearningPage.qml")
                                     }
                                 }
                             }

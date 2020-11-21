@@ -184,7 +184,7 @@ Page {
 
                                 onPressAndHold: {
                                     if (developer){console.log("testing", index)}
-                                    var dialog = stackView.push(selColoores,{"intexos":index})
+                                    var dialog = pageStack.push(selColoores,{"intexos":index})
                                     dialog.colorselected.connect(function() {
                                         /*blotch_color = dialog.selectedColor
                                         for (var i = 0; i < harnesses.count; i++) {

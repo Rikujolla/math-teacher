@@ -31,3 +31,7 @@ QML_DESIGNER_IMPORT_PATH =
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+ANDROID_PACKAGE_SOURCE_DIR = $$PWD/android-sources
+
+DISTFILES += \
+    android-sources/AndroidManifest.xml

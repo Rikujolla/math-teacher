@@ -101,11 +101,11 @@ ApplicationWindow {
 
         ToolButton {
             id: toolButton
-            text: stackView.depth > 1 ? "\u25C0" : "\u2630"
+            text: pageStack.depth > 1 ? "\u25C0" : "\u2630"
             font.pixelSize: Qt.application.font.pixelSize * 1.6
             onClicked: {
-                if (stackView.depth > 1) {
-                    stackView.pop()
+                if (pageStack.depth > 1) {
+                    pageStack.pop()
                 } else {
                     drawer.open()
                 }
@@ -113,7 +113,7 @@ ApplicationWindow {
         }
 
         Label {
-            text: stackView.currentItem.title
+            text: pageStack.currentItem.title
             anchors.centerIn: parent
         }
     }
@@ -130,7 +130,7 @@ ApplicationWindow {
                 text: qsTr("About")
                 width: parent.width
                 onClicked: {
-                    stackView.push("pages/About.qml")
+                    pageStack.push("pages/About.qml")
                     drawer.close()
                 }
             }
@@ -138,7 +138,7 @@ ApplicationWindow {
                 text: qsTr("Change player")
                 width: parent.width
                 onClicked: {
-                    stackView.push("pages/ChangePlayer.qml")
+                    pageStack.push("pages/ChangePlayer.qml")
                     drawer.close()
                 }
             }
@@ -146,7 +146,7 @@ ApplicationWindow {
     }
 
     StackView {
-        id: stackView
+        id: pageStack
         initialItem: "pages/QuizPage.qml"
         anchors.fill: parent
     }

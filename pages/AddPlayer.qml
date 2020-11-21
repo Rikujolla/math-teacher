@@ -23,7 +23,7 @@ Page {
             onClicked: {
                 name = nameField.text
                 playeradded()
-                stackView.pop()
+                pageStack.pop()
             }
         }
     }

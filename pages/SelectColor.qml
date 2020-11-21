@@ -36,7 +36,7 @@ Page {
                                 harnesses.set(i,{"fill":col, "stroke":col})
                             }
                         }
-                        stackView.pop()
+                        pageStack.pop()
                     }
                 }
             }

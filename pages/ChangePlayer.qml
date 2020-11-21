@@ -23,105 +23,91 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 import QtQuick 2.12
-import QtQuick.Controls 2.5
-import QtQuick.Window 2.15
-//import Sailfish.Silica 1.0
 import QtQuick.LocalStorage 2.0
 import "./settings.js" as Mysets
-
+import QtQuick.Window 2.15
+import QtQuick.Controls 2.5
 
 Page {
     id: page
+    title: delete_mode ? qsTr("Player deletion") : qsTr("Player selection")
     property bool delete_mode: false
-    // The effective value will be restricted by ApplicationWindow.allowedOrientations
-    //allowedOrientations: Orientation.All
+
     ListView {
         id: listView
-
-        //anchors.top: button_row.bottom
-        model: players
-        anchors.fill: parent
-        /*header: Label {
-            text: delete_mode ? qsTr("Player deletion") : qsTr("Player selection")
-        }*/
+        width: Screen.width; height: Screen.height
         header: Row{
-            id: button_row
-            spacing:100
-            anchors.horizontalCenter: parent.horizontalCenter
-            Button {
-                text: qsTr("Delete player")
-                onClicked: {
-                    delete_mode = true;
-                }
-            }
+                    id: button_row
+                    spacing:100
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    Button {
+                        text: qsTr("Delete player")
+                        onClicked: {
+                            delete_mode = true;
+                        }
+                    }
 
-            Button {
-                text: qsTr("Add player")
-                onClicked: {
-                    var dialog = stackView.push(addPlayer,
-                                                {"name": ''})
-                    dialog.playeradded.connect(function() {
-                        player_name = dialog.name
-                        Mysets.saveSettings()
-                        Mysets.loadPlayers();
-                    })
+                    Button {
+                        text: qsTr("Add player")
+                        onClicked: {
+                            var dialog = pageStack.push(addPlayer,
+                                                        {"name": ''})
+                            dialog.playeradded.connect(function() {
+                                player_name = dialog.name
+                                Mysets.saveSettings()
+                                Mysets.loadPlayers();
+                            })
+                        }
+                    }
                 }
-            }
-        }
-
-        delegate: Rectangle {
+        model: players
+        delegate: MouseArea {
             id: delegate
+            height:50
+            width:Screen.width
 
-            MouseArea {
-                Label{
-                    //x: Theme.horizontalPageMargin
-                    text: player
-                    background: Rectangle {height:100;width:page.width}
-                    //anchors.verticalCenter: parent.verticalCenter
-                    //color: delete_mode ? "red": (delegate.highlighted ? Theme.highlightColor : Theme.primaryColor)
+            Text{
+                x: Screen.width/30
+                text: player
+                //height: 200
+                //text: index + player
+                //background: Rectangle {height:100;width:page.width}
+                //anchors.verticalCenter: parent.verticalCenter
+                color: delete_mode ? "red": "black"
+            }
+            onClicked: {
+                player_name = players.get(index).player
+                if (!delete_mode) {
+                    Mysets.updateActivePlayer(index)
+                    Mysets.loadSettings()
+                    questions_count = Math.round(4 + Math.log(level+1) * 5);
+                    pageStack.pop()
                 }
-                onClicked: {
-                    player_name = players.get(index).player
-                    if (!delete_mode) {
-                        Mysets.updateActivePlayer(index)
-                        Mysets.loadSettings()
-                        questions_count = Math.round(4 + Math.log(level+1) * 5);
-                        pageStack.pop()
-                    }
-                    else {
-                        remorseDel.execute(qsTr("Deleting"), console.log("remorse") , 3000 )
-                    }
+                else {
+                    console.log("remorse", index)
+                    Mysets.deletePlayer(player_name)
+                    delete_mode = false
+                    Mysets.loadPlayers();
+                    //remorseDel.execute(qsTr("Deleting"), console.log("remorse") , 3000 )
                 }
             }
         }
 
-
-        /*RemorsePopup { id: remorseDel
-            onTriggered: {
-                Mysets.deletePlayer(player_name)
-                delete_mode = false
-                Mysets.loadPlayers();
-            }
-        }*/
-
-        //VerticalScrollDecorator {}
-    }
-
-    AddPlayer{
-        id: addPlayer
-        visible:false
-    }
-
-    ListModel {
-        id: players
-        ListElement {
-            player: ""
-            status: ""
+        AddPlayer{
+            id: addPlayer
+            visible:false
         }
-    }
 
+        ListModel {
+            id: players
+            ListElement {
+                player: ""
+                status: ""
+            }
+        }
+
+    }
     Component.onCompleted: {
         Mysets.loadPlayers();
     }
-
 }

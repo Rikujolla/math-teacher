@@ -89,14 +89,14 @@ Page {
                 console.log("Ok clicked")
                 coins = coins + 3;
                 Mysets.saveCoins();
-                stackView.replace("FunPage.qml")
+                pageStack.replace("FunPage.qml")
             }
             onRejected:
             {
                 console.log("Cancel clicked")
                 coins = coins + 3;
                 Mysets.saveCoins();
-                stackView.pop()
+                pageStack.pop()
             }
 
         }

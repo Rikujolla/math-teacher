@@ -23,14 +23,17 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 import QtQuick 2.2
-import Sailfish.Silica 1.0
+//import Sailfish.Silica 1.0
+import QtQuick.Window 2.15
+import QtQuick.Controls 2.5
 
 Page {
     id: page
+    title: qsTr("Learning page")
     // The effective value will be restricted by ApplicationWindow.allowedOrientations
-    allowedOrientations: Orientation.All
+    //    allowedOrientations: Orientation.All
     property int re_sult
-    Canvas {
+    /*Canvas {
         id:bird_backround
         width: 100
         height: 200
@@ -39,33 +42,33 @@ Page {
             ctx.fillStyle = Qt.rgba(1, 0, 0, 1);
             ctx.fillRect(0, 0, width, height);
         }
+    }*/
 
-
-    }
-
-
-    SilicaListView {
+    ListView {
         id: listView
         model: mistakesModel
         anchors.fill: parent
-        header: PageHeader {
-            title: qsTr("Learning page")
-        }
-        delegate: BackgroundItem {
+        /*header: Text {
+            text: qsTr("Learning page")
+        }*/
+
+        delegate: MouseArea {
             id: delegate
+            height:50
+            width:Screen.width
 
             Label {
-                x: Theme.horizontalPageMargin
+                x: Screen.width/30
                 text: first  + " x " + second + " = " + first*second
                 anchors.verticalCenter: parent.verticalCenter
-                color: delegate.highlighted ? Theme.highlightColor : Theme.primaryColor
+                //color: delegate.highlighted ? Theme.highlightColor : Theme.primaryColor
             }
             onClicked: {
                 if (mistakesModel.count >1) {
                     re_sult = mistakesModel.get(index).first * mistakesModel.get(index).second
                     mistakesModel.remove(index)
                     coins++;
-                    pageStack.push(Qt.resolvedUrl("FlowersPage.qml"), {flower_result: re_sult})
+                    //pageStack.push(Qt.resolvedUrl("FlowersPage.qml"), {flower_result: re_sult})
                 }
                 else {
                     mistakesModel.remove(index)
@@ -73,7 +76,7 @@ Page {
                 }
             }
         }
-        VerticalScrollDecorator {}
+        // VerticalScrollDecorator {}
 
     }
 }
