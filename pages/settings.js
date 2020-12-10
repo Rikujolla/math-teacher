@@ -8,12 +8,9 @@ function saveSettings() {
                     tx.executeSql('CREATE TABLE IF NOT EXISTS Settings(name TEXT, subname TEXT, valte TEXT, valre REAL, valint INTEGER)');
 
                     // player_name
-                    var rs = tx.executeSql('SELECT * FROM Settings WHERE name = ?', 'player_name');
-                    //if (rs.rows.length > 0) {tx.executeSql('UPDATE Settings SET valte=? WHERE name=?', [player_name, 'player_name'])}
-                    if (rs.rows.length > 0) {tx.executeSql('INSERT INTO Settings VALUES(?, ?, ?, ?, ?)', [ 'player_name', '', player_name, '', '' ])}
+                    var rs = tx.executeSql('SELECT * FROM Settings WHERE name = ? AND valte = ?', ['player_name', player_name]);
                     // If no players add active player
-                    else {tx.executeSql('INSERT INTO Settings VALUES(?, ?, ?, ?, ?)', [ 'player_name', 'active', player_name, '', '' ])}
-
+                    if (rs.rows.length === 0) {tx.executeSql('INSERT INTO Settings VALUES(?, ?, ?, ?, ?)', [ 'player_name', 'active', player_name, '', '' ])}
                 }
                 )
 

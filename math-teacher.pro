@@ -34,4 +34,5 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 ANDROID_PACKAGE_SOURCE_DIR = $$PWD/android-sources
 
 DISTFILES += \
+    README.md \
     android-sources/AndroidManifest.xml
